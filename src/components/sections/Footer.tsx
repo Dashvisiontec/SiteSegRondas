@@ -29,7 +29,7 @@ export const Footer = () => (
               </a>
             </li>
             <li>
-              <a href="https://wa.me/5598319970934" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-foreground transition-colors">
+              <a href="https://wa.me/559831970934" target="_blank" rel="noreferrer" className="flex items-center gap-2 hover:text-foreground transition-colors">
                 <MessageCircle className="w-4 h-4 text-primary" /> (98) 3197-0934
               </a>
             </li>
@@ -38,7 +38,6 @@ export const Footer = () => (
       </div>
       <div className="mt-12 pt-6 border-t border-border/40 flex flex-col sm:flex-row justify-between gap-3 text-xs text-muted-foreground">
         <div>© {new Date().getFullYear()} SegRondas. Todos os direitos reservados.</div>
-        <div className="flex gap-4"><a href="/privacidade" className="hover:text-foreground">Privacidade</a><a href="/termos" className="hover:text-foreground">Termos</a></div>
       </div>
     </div>
   </footer>

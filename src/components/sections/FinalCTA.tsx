@@ -144,7 +144,7 @@ export const FinalCTA = () => {
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Button size="lg" className="bg-gradient-primary hover:opacity-90 shadow-glow group" asChild>
-              <a href="https://wa.me/5598319970934" target="_blank" rel="noreferrer">
+              <a href="https://wa.me/559831970934" target="_blank" rel="noreferrer">
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Falar pelo WhatsApp
               </a>
