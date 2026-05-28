@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MessageCircle, Mail, Send } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Dialog,
   DialogContent,
@@ -48,32 +49,58 @@ export const FinalCTA = () => {
     },
   });
 
-  const onSubmit = (data: ContactFormValues) => {
+  const onSubmit = async (data: ContactFormValues) => {
     const { nome, email, empresa, telefone, mensagem } = data;
-    const subject = `Contato pelo site - ${nome}`;
-    const body = [
-      `Nome: ${nome}`,
-      `E-mail: ${email}`,
-      empresa ? `Empresa: ${empresa}` : null,
-      telefone ? `Telefone: ${telefone}` : null,
-      "",
-      "Mensagem:",
-      mensagem,
-    ]
-      .filter(Boolean)
-      .join("\n");
 
-    const mailto = `mailto:sac@dashvisiontec.com.br?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailto;
+    try {
+      // 1. Tenta salvar no Supabase (tabela 'leads')
+      const { error } = await supabase.from('leads').insert([
+        {
+          nome,
+          email,
+          empresa: empresa || null,
+          telefone: telefone || null,
+          mensagem
+        }
+      ]);
 
-    toast.success("Abrindo seu cliente de e-mail…", {
-      description: "Finalize o envio na janela que se abriu.",
-    });
+      if (error) throw error;
 
-    setTimeout(() => {
+      toast.success("Mensagem enviada com sucesso!", {
+        description: "Agradecemos o contato, nossa equipe retornará em breve.",
+      });
+
       setOpen(false);
       form.reset();
-    }, 600);
+    } catch (err: any) {
+      console.warn("Erro ao salvar no banco, recorrendo ao mailto:", err);
+
+      // Fallback para o Mailto caso a tabela ainda não esteja configurada no Supabase
+      const subject = `Contato pelo site - ${nome}`;
+      const body = [
+        `Nome: ${nome}`,
+        `E-mail: ${email}`,
+        empresa ? `Empresa: ${empresa}` : null,
+        telefone ? `Telefone: ${telefone}` : null,
+        "",
+        "Mensagem:",
+        mensagem,
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      const mailto = `mailto:sac@dashvisiontec.com.br?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+
+      toast.info("Redirecionando para o e-mail...", {
+        description: "Seu banco de dados não respondeu, envie pelo e-mail padrão.",
+      });
+
+      setTimeout(() => {
+        setOpen(false);
+        form.reset();
+      }, 1000);
+    }
   };
 
   return (
