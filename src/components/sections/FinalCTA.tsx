@@ -53,18 +53,25 @@ export const FinalCTA = () => {
     const { nome, email, empresa, telefone, mensagem } = data;
 
     try {
-      // 1. Tenta salvar no Supabase (tabela 'leads')
-      const { error } = await supabase.from('leads').insert([
-        {
-          nome,
-          email,
-          empresa: empresa || null,
-          telefone: telefone || null,
-          mensagem
-        }
-      ]);
+      // Envia os dados silenciosamente via FormSubmit.co direto para o e-mail
+      const response = await fetch("https://formsubmit.co/ajax/sac@dashvisiontec.com.br", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          Nome: nome,
+          Email: email,
+          Empresa: empresa || "Não informada",
+          Telefone: telefone || "Não informado",
+          Mensagem: mensagem
+        })
+      });
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error("Erro na rede ao tentar enviar");
+      }
 
       toast.success("Mensagem enviada com sucesso!", {
         description: "Agradecemos o contato, nossa equipe retornará em breve.",
@@ -73,9 +80,9 @@ export const FinalCTA = () => {
       setOpen(false);
       form.reset();
     } catch (err: any) {
-      console.warn("Erro ao salvar no banco, recorrendo ao mailto:", err);
+      console.error("Erro ao enviar mensagem via FormSubmit:", err);
 
-      // Fallback para o Mailto caso a tabela ainda não esteja configurada no Supabase
+      // Fallback de segurança apenas se falhar a internet
       const subject = `Contato pelo site - ${nome}`;
       const body = [
         `Nome: ${nome}`,
@@ -93,7 +100,7 @@ export const FinalCTA = () => {
       window.location.href = mailto;
 
       toast.info("Redirecionando para o e-mail...", {
-        description: "Seu banco de dados não respondeu, envie pelo e-mail padrão.",
+        description: "Houve uma instabilidade no envio automático. Por favor, envie via e-mail.",
       });
 
       setTimeout(() => {
