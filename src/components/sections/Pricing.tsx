@@ -8,13 +8,15 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-type Tier = "starter" | "profissional" | "enterprise";
+type Tier = "starter" | "profissional" | "enterprise" | "personalizado";
 
 type Plan = {
   id: Tier;
   name: string;
   audience: string;
-  priceMonthly: number;
+  priceMonthly?: number;
+  customPrice?: string;
+  priceSubtitle?: string;
   tagline: string;
   highlight?: boolean;
   badge?: string;
@@ -52,6 +54,16 @@ const plans: Plan[] = [
     cta: "Falar com especialista",
     ctaHref: "#cta",
   },
+  {
+    id: "personalizado",
+    name: "Personalizado",
+    audience: "Para operações com demandas e integrações exclusivas",
+    customPrice: "Sob consulta",
+    priceSubtitle: "dimensionado para sua demanda",
+    tagline: "Recursos sob medida, integrações e atendimento VIP.",
+    cta: "Falar com especialista",
+    ctaHref: "#cta",
+  },
 ];
 
 type FeatureValue = boolean | string;
@@ -68,18 +80,18 @@ const groups: FeatureGroup[] = [
     title: "Operacional",
     icon: ShieldCheck,
     rows: [
-      { label: "Acesso à plataforma SegRondas", values: { starter: true, profissional: true, enterprise: true } },
-      { label: "Monitoramento por QR Code", values: { starter: true, profissional: true, enterprise: true } },
-      { label: "Registro de data e horário", values: { starter: true, profissional: true, enterprise: true } },
-      { label: "Acesso via aplicativo mobile", values: { starter: true, profissional: true, enterprise: true } },
-      { label: "Painel básico de acompanhamento", values: { starter: true, profissional: true, enterprise: true } },
-      { label: "Controle de acesso por perfis", values: { starter: true, profissional: true, enterprise: true } },
-      { label: "Geolocalização das leituras", values: { starter: false, profissional: true, enterprise: true } },
-      { label: "Funcionamento offline", values: { starter: false, profissional: true, enterprise: true } },
-      { label: "Configuração de tempo por ronda", values: { starter: false, profissional: true, enterprise: true } },
-      { label: "Registro de ocorrências (imagens)", values: { starter: false, profissional: true, enterprise: true } },
-      { label: "Checklists configuráveis", values: { starter: false, profissional: true, enterprise: true } },
-      { label: "Armazenamento de imagens", values: { starter: "—", profissional: "60 dias", enterprise: "90 dias" } },
+      { label: "Acesso à plataforma SegRondas", values: { starter: true, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Monitoramento por QR Code", values: { starter: true, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Registro de data e horário", values: { starter: true, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Acesso via aplicativo mobile", values: { starter: true, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Painel básico de acompanhamento", values: { starter: true, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Controle de acesso por perfis", values: { starter: true, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Geolocalização das leituras", values: { starter: false, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Funcionamento offline", values: { starter: false, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Configuração de tempo por ronda", values: { starter: false, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Registro de ocorrências (imagens)", values: { starter: false, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Checklists configuráveis", values: { starter: false, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Armazenamento de imagens", values: { starter: "—", profissional: "60 dias", enterprise: "90 dias", personalizado: "Ilimitado" } },
     ],
   },
   {
@@ -87,21 +99,23 @@ const groups: FeatureGroup[] = [
     icon: Brain,
     highlight: true,
     rows: [
-      { label: "Painéis analíticos", values: { starter: false, profissional: true, enterprise: true } },
-      { label: "Dashboards gerenciais", values: { starter: false, profissional: true, enterprise: true } },
-      { label: "Inteligência Artificial", values: { starter: false, profissional: false, enterprise: true }, star: "enterprise" },
-      { label: "Alertas automáticos", values: { starter: false, profissional: false, enterprise: true }, star: "enterprise" },
-      { label: "Painéis executivos", values: { starter: false, profissional: false, enterprise: true } },
-      { label: "Relatórios automatizados", values: { starter: false, profissional: false, enterprise: true } },
+      { label: "Painéis analíticos", values: { starter: false, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Dashboards gerenciais", values: { starter: false, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Inteligência Artificial", values: { starter: false, profissional: false, enterprise: true, personalizado: true }, star: "enterprise" },
+      { label: "Alertas automáticos", values: { starter: false, profissional: false, enterprise: true, personalizado: true }, star: "enterprise" },
+      { label: "Painéis executivos", values: { starter: false, profissional: false, enterprise: true, personalizado: true } },
+      { label: "Relatórios automatizados", values: { starter: false, profissional: false, enterprise: true, personalizado: true } },
+      { label: "API & Integrações dedicadas", values: { starter: false, profissional: false, enterprise: false, personalizado: true }, star: "personalizado" },
     ],
   },
   {
     title: "Suporte & Compliance",
     icon: Headphones,
     rows: [
-      { label: "Suporte e atualizações", values: { starter: true, profissional: true, enterprise: true } },
-      { label: "Trilha de auditoria", values: { starter: false, profissional: false, enterprise: true } },
-      { label: "Suporte prioritário", values: { starter: false, profissional: false, enterprise: true } },
+      { label: "Suporte e atualizações", values: { starter: true, profissional: true, enterprise: true, personalizado: true } },
+      { label: "Trilha de auditoria", values: { starter: false, profissional: false, enterprise: true, personalizado: true } },
+      { label: "Suporte prioritário", values: { starter: false, profissional: false, enterprise: true, personalizado: "Gerente Dedicado" } },
+      { label: "SLA garantido em contrato", values: { starter: false, profissional: false, enterprise: false, personalizado: true }, star: "personalizado" },
     ],
   },
 ];
@@ -127,8 +141,10 @@ export const Pricing = () => {
   const [annual, setAnnual] = useState(false);
   const discount = 0.2;
 
-  const priceFor = (p: Plan) =>
-    annual ? p.priceMonthly * (1 - discount) : p.priceMonthly;
+  const priceFor = (p: Plan) => {
+    if (!p.priceMonthly) return 0;
+    return annual ? p.priceMonthly * (1 - discount) : p.priceMonthly;
+  };
 
   return (
     <section id="planos" className="relative py-24 sm:py-32">
@@ -169,13 +185,13 @@ export const Pricing = () => {
         </div>
 
         {/* Plan Cards */}
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-stretch">
           {plans.map((p) => (
             <div
               key={p.id}
               className={`reveal relative rounded-2xl p-8 flex flex-col transition-all ${
                 p.highlight
-                  ? "bg-gradient-to-b from-primary/15 to-transparent border-2 border-primary/50 shadow-glow md:-translate-y-2"
+                  ? "bg-gradient-to-b from-primary/15 to-transparent border-2 border-primary/50 shadow-glow xl:-translate-y-2"
                   : "glass border border-border/50 hover:border-primary/30"
               }`}
             >
@@ -188,18 +204,31 @@ export const Pricing = () => {
               <p className="mt-1 text-xs text-primary/80 font-medium">{p.audience}</p>
               <p className="mt-3 text-sm text-muted-foreground min-h-[40px]">{p.tagline}</p>
 
-              <div className="mt-6">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-sm text-muted-foreground">R$</span>
-                  <span className="text-5xl font-bold tracking-tight">{formatPrice(priceFor(p))}</span>
-                  <span className="text-sm text-muted-foreground">/mês</span>
-                </div>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  por posto · {annual ? "cobrado anualmente" : "cobrado mensalmente"}
-                </div>
-                {annual && (
-                  <div className="mt-1 text-xs text-primary">
-                    Economize R$ {formatPrice(p.priceMonthly * 12 * discount)}/ano
+              <div className="mt-6 min-h-[76px] flex flex-col justify-end">
+                {p.customPrice ? (
+                  <div>
+                    <div className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+                      {p.customPrice}
+                    </div>
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      {p.priceSubtitle || "dimensionado para sua demanda"}
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-sm text-muted-foreground">R$</span>
+                      <span className="text-4xl sm:text-5xl font-bold tracking-tight">{formatPrice(priceFor(p))}</span>
+                      <span className="text-sm text-muted-foreground">/mês</span>
+                    </div>
+                    <div className="mt-1 text-xs text-muted-foreground">
+                      por posto · {annual ? "cobrado anualmente" : "cobrado mensalmente"}
+                    </div>
+                    {annual && p.priceMonthly && (
+                      <div className="mt-1 text-xs text-primary">
+                        Economize R$ {formatPrice(p.priceMonthly * 12 * discount)}/ano
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -215,12 +244,14 @@ export const Pricing = () => {
               </Button>
 
               {/* Top differentiators */}
-              <ul className="mt-8 space-y-3 text-sm">
+              <ul className="mt-8 space-y-3 text-sm flex-1">
                 {(p.id === "starter"
                   ? ["Monitoramento por QR Code", "Aplicativo mobile", "Painel de acompanhamento", "Controle por perfis"]
                   : p.id === "profissional"
                   ? ["Tudo do Starter", "Geolocalização das leituras", "Funcionamento offline", "Checklists configuráveis", "Dashboards gerenciais", "Imagens 60 dias"]
-                  : ["Tudo do Profissional", "Inteligência Artificial", "Alertas automáticos", "Trilha de auditoria", "Painéis executivos", "Suporte prioritário"]
+                  : p.id === "enterprise"
+                  ? ["Tudo do Profissional", "Inteligência Artificial", "Alertas automáticos", "Trilha de auditoria", "Painéis executivos", "Suporte prioritário"]
+                  : ["Tudo do Enterprise", "API e integrações dedicadas", "SLA garantido em contrato", "Gerente de conta dedicado", "Treinamento para a equipe", "Imagens e dados sob medida"]
                 ).map((f) => (
                   <li key={f} className="flex items-start gap-2">
                     <Check className="w-4 h-4 text-primary mt-0.5 shrink-0" />
@@ -282,17 +313,17 @@ export const Pricing = () => {
             <table className="w-full text-sm">
               <thead className="sticky top-0">
                 <tr className="border-b border-border/50 bg-background/60 backdrop-blur">
-                  <th className="text-left p-4 font-semibold w-[40%]">Funcionalidades</th>
+                  <th className="text-left p-4 font-semibold w-[36%]">Funcionalidades</th>
                   {plans.map((p) => (
                     <th
                       key={p.id}
-                      className={`p-4 font-semibold text-center min-w-[140px] ${
+                      className={`p-4 font-semibold text-center min-w-[130px] ${
                         p.highlight ? "bg-primary/5" : ""
                       }`}
                     >
                       <div className={p.highlight ? "text-primary" : ""}>{p.name}</div>
                       <div className="text-xs font-normal text-muted-foreground mt-1">
-                        R$ {formatPrice(priceFor(p))}/mês
+                        {p.customPrice ? p.customPrice : `R$ ${formatPrice(priceFor(p))}/mês`}
                       </div>
                     </th>
                   ))}
@@ -302,7 +333,7 @@ export const Pricing = () => {
                 {groups.map((g) => (
                   <Fragment key={g.title}>
                     <tr className="bg-background/40">
-                      <td colSpan={4} className="p-3 pl-4">
+                      <td colSpan={5} className="p-3 pl-4">
                         <div className="flex items-center gap-2 text-xs uppercase tracking-wider font-semibold text-primary/90">
                           <g.icon className="w-4 h-4" />
                           {g.title}
@@ -318,6 +349,7 @@ export const Pricing = () => {
                         <td className="p-3 text-center"><Cell v={f.values.starter} /></td>
                         <td className="p-3 text-center bg-primary/5"><Cell v={f.values.profissional} /></td>
                         <td className="p-3 text-center"><Cell v={f.values.enterprise} star={f.star === "enterprise"} /></td>
+                        <td className="p-3 text-center"><Cell v={f.values.personalizado} star={f.star === "personalizado"} /></td>
                       </tr>
                     ))}
                   </Fragment>
@@ -348,7 +380,7 @@ export const Pricing = () => {
                         {p.name}
                       </div>
                       <div className="text-xs text-muted-foreground mt-0.5">
-                        R$ {formatPrice(priceFor(p))}/mês
+                        {p.customPrice ? p.customPrice : `R$ ${formatPrice(priceFor(p))}/mês`}
                       </div>
                     </div>
                     <ChevronDown className="w-4 h-4 text-muted-foreground shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />

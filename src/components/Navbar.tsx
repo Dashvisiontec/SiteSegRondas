@@ -6,7 +6,6 @@ import { Menu, X } from "lucide-react";
 const links = [
   { href: "#como-funciona", label: "Como funciona" },
   { href: "#funcionalidades", label: "Funcionalidades" },
-  { href: "#tempo-real", label: "Tempo real" },
   { href: "#setores", label: "Para quem é" },
   { href: "#beneficios", label: "Benefícios" },
   { href: "#planos", label: "Planos" },
